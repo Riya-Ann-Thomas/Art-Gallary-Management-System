@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/pyodide/v0.17.0/full/pyodide.js"></script>
+    <script type="text/javascript">
+      async function initPyodide() {
+        await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/" });
+      }
+      initPyodide();
+
+      function submitForm() {
+        const inputString = document.querySelector("#inputString").value;
+        const formData = new FormData();
+        formData.append('inputString', inputString);
+        fetch('/submit', {
+          method: 'POST',
+          body: formData
+        }).then(response => response.text()).then(data => {
+          console.log(data);
+        });
+      }
+    </script>
+    <title>Input Form</title>
+    <style>
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/submit" method="POST" onsubmit="submitForm(); return false;">
+      <label for="inputString">Enter Input String:</label>
+      <input type="text" id="inputString" name="inputString"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+
